@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Minhas Pontuações</title>
+</head>
+<body>
+  <h1>Suas Pontuações</h1>
+
+  <input type="email" id="email" placeholder="Digite seu e-mail" />
+  <button onclick="buscarPontuacao()">Buscar</button>
+
+  <div id="resultado" style="margin-top: 20px;"></div>
+
+  <script>
+    async function buscarPontuacao() {
+      const email = document.getElementById("email").value;
+      const res = await fetch(`http://localhost:3000/usuario?email=${email}`);
+      const dados = await res.json();
+
+      if (dados.erro) {
+        document.getElementById("resultado").innerHTML = "Usuário não encontrado.";
+      } else {
+        document.getElementById("resultado").innerHTML = `
+          <p><strong>Nome:</strong> ${dados.nome}</p>
+          <p><strong>Pontos:</strong> ${dados.pontos}</p>
+          <p><strong>Nível:</strong> ${dados.nivel}</p>
+          <p><strong>Benefícios:</strong> ${dados.beneficios.join(", ")}</p>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>

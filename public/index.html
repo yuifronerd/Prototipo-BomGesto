@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bom Gesto - Doações</title>
+  <style>
+  df-messenger {
+    --df-messenger-bot-message: #ffeaea;
+    --df-messenger-button-titlebar-color: #c62828; /* Vermelho */
+    --df-messenger-chat-background-color: #fffaf0;
+    --df-messenger-font-color: #000;
+    --df-messenger-send-icon: #c62828;
+    --df-messenger-user-message: #fce4ec;
+  }
+</style>
+</head>
+<body>
+  <h1>Faça sua doação</h1>
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="Gestinho"
+  agent-id="68c15fc4-1b2f-45aa-a150-a584a565910a"
+  language-code="pt-br"
+></df-messenger>
+  <form id="formDoacao">
+    <input type="text" name="nome" placeholder="Seu nome" required /><br />
+    <input type="text" name="item" placeholder="O que deseja doar?" required /><br />
+    <input tyupe="text" name="email" placeholder="Seu email" required /><br />
+    <button type="submit">Doar</button>
+  </form>
+  <script>
+    const form = document.getElementById("formDoacao");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch("/doar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const msg = await res.text();
+      alert(msg);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa de Doações</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 500px;
+      width: 100%;
+      border-radius: 10px;
+      border: 2px solid #c62828;
+      margin-top: 10px;
+    }
+
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Encontre um local para doar</h2>
+
+  <!-- Filtro de tipo de doação -->
+  <label for="tipoDoacao">Filtrar por tipo de doação:</label>
+  <select id="tipoDoacao" onchange="filtrarLocais()">
+    <option value="">Selecione</option>
+    <option value="sangue">Sangue</option>
+    <option value="roupas">Roupas</option>
+    <option value="alimentos">Alimentos</option>
+    <option value="todos">Todos</option>
+  </select>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const locais = [
+      {
+        nome: "Instituto XYZ",
+        lat: -3.1345,
+        lng: -60.2011,
+        endereco: "Rua das Doações, 123, Centro",
+        tipo: "sangue"
+      },
+      {
+        nome: "Fundação ABC",
+        lat: -3.1156,
+        lng: -60.1902,
+        endereco: "Avenida Solidariedade, 456, Zona Sul",
+        tipo: "alimentos"
+      },
+      {
+        nome: "Lar das Crianças",
+        lat: -3.1267,
+        lng: -60.2154,
+        endereco: "Rua Amor, 789, Zona Oeste",
+        tipo: "roupas"
+      }
+    ];
+
+    function filtrarLocais() {
+      const tipoSelecionado = document.getElementById("tipoDoacao").value;
+      const map = L.map('map').setView([-3.1031, -60.0261], 13); // Centro da cidade
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> colaboradores'
+      }).addTo(map);
+
+      locais.forEach(local => {
+        // Verifica se o tipo de doação corresponde ao filtro
+        if (tipoSelecionado === "todos" || local.tipo === tipoSelecionado) {
+          const marker = L.marker([local.lat, local.lng]).addTo(map);
+          marker.bindPopup(`<strong>${local.nome}</strong><br>${local.endereco}`);
+        }
+      });
+    }
+
+    // Carregar o mapa com todos os locais inicialmente
+    filtrarLocais();
+  </script>
+</body>
+</html>
