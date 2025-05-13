@@ -35,11 +35,11 @@ app.get('/doacoes', async (req, res) => {
     res.status(500).send('Erro ao buscar doações: ' + error.message);
   }
 });
-app.use(express.static('public')); // serve arquivos HTML da pasta "public"
+app.use(express.static('public'));
 app.post("/doacao", async (req, res) => {
   const { nome, email, tipoDoacao } = req.body;
 
-  const pontosRecebidos = 10; // Você pode mudar isso conforme o tipo da doação
+  const pontosRecebidos = 10;
 
   const userRef = db.collection("usuarios").doc(email);
 
@@ -47,7 +47,6 @@ app.post("/doacao", async (req, res) => {
   await db.runTransaction(async (t) => {
     const doc = await t.get(userRef);
     if (!doc.exists) {
-      // Se for novo usuário
       t.set(userRef, {
         nome,
         email,
