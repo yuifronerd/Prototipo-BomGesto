@@ -67,14 +67,13 @@
 
     function filtrarLocais() {
       const tipoSelecionado = document.getElementById("tipoDoacao").value;
-      const map = L.map('map').setView([-3.1031, -60.0261], 13); // Centro da cidade
+      const map = L.map('map').setView([-3.1031, -60.0261], 13);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> colaboradores'
       }).addTo(map);
 
       locais.forEach(local => {
-        // Verifica se o tipo de doação corresponde ao filtro
         if (tipoSelecionado === "todos" || local.tipo === tipoSelecionado) {
           const marker = L.marker([local.lat, local.lng]).addTo(map);
           marker.bindPopup(`<strong>${local.nome}</strong><br>${local.endereco}`);
@@ -82,7 +81,6 @@
       });
     }
 
-    // Carregar o mapa com todos os locais inicialmente
     filtrarLocais();
   </script>
 </body>
